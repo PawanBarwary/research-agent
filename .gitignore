@@ -1,0 +1,23 @@
+# Environment variables / secrets
+.env
+
+# Virtual environment
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Chroma local database
+chroma_db/
+
+# macOS
+.DS_Store
+
+# Streamlit local config/secrets
+.streamlit/secrets.toml
+
+# IDE
+.vscode/
+.idea/
