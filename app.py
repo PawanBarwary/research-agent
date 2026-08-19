@@ -1,5 +1,5 @@
 import os
-
+import uuid
 import chromadb
 import streamlit as st
 from dotenv import load_dotenv
@@ -44,7 +44,9 @@ for key, value in DEFAULT_STATE.items():
     if key not in st.session_state:
         st.session_state[key] = value
 
-
+if "session_id" not in st.session_state:
+    st.session_state.session_id = str(uuid.uuid4())
+    
 # =========================================================
 # Clients
 # =========================================================
@@ -57,19 +59,18 @@ def get_gemini_client():
 
 
 @st.cache_resource
-def get_chroma_collection():
-    chroma_client = chromadb.PersistentClient(
+def get_chroma_client():
+    return chromadb.PersistentClient(
         path="./chroma_db"
-    )
-
-    return chroma_client.get_or_create_collection(
-        name="research_papers"
     )
 
 
 gemini_client = get_gemini_client()
-collection = get_chroma_collection()
+chroma_client = get_chroma_client()
 
+collection = chroma_client.get_or_create_collection(
+    name=("research" + st.session_state.session_id.replace("-", ""))
+)
 
 # =========================================================
 # Header
